@@ -1,0 +1,22 @@
+### Protocole de gestion d'erreurs ###
+
+L'icmp est un protocole de gestion d'erreurs vachement bien pensé...donc moi
+je leur ai pompé tout !!
+
+Notre protocole icmp maison est là pour vérifier un certain nombre de choses
+(bon là je ment...on vérifie une chose pour le moment...)
+On pourra implémenter autant de codes erreurs qu'on le souhaite...
+
+I) Comment il fonctionne :
+
+	Bon eh ben pour faire simple quand on a détécté qu'un mess pose 
+	problème, on renvoit le code erreur qui lui convient de la forme :
+		
+		TYPE_ERROR : <code_erreur>
+	
+
+II) Codes erreur
+
+	- 0 --> Erreur de formatage du message
+
+D'autres implémentations d'erreurs peuvent être faites au besoin ^^

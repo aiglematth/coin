@@ -1,0 +1,50 @@
+### DEFINITION D'UN BLOCK ###
+
+I) La taille
+	
+	La taille sera définie par l'expression suivante :
+	
+		Vt = Vn + F
+	
+	Avec Vt --> Valeur totale (fixe ?)
+	Vn      --> Valeur arbitraire (fixe ?)
+	F	--> Nombre de transactions
+
+	Il faudrat choisir...soit c'est Vn qui est fixe...soit c'est Vt
+	(Je pencherait plus pour Vt)
+	De plus, si ton but est qu'on puisse miner sans aucun problème sur des machines peu puissantes...un bloc doit être léger sinon il devront télécharger
+	des dizaines de gigas avant de commencer à miner...ce qui est beaucoup trop...et qui est actuellement l'une des causes du professionalisme des minages du bitcoin...
+	car tout le monde n'a pas 100 GO à réserver sur son PC pour commencer à lancer soln minage...pire ! Personne n'a 100 GO à réserver sur son portable ! Ne parlons même pas
+	de gens qui voudraient miner avec un rasp py...
+	Un bloc pourrait donc se limiter à quelques octets...
+
+II) Les champs
+
+	Basiquement on aura besoin de :
+		--> NUMERO (le numéro du block)
+		--> PRECEDENT_HASH (le hash précédent)
+		--> DATA (Ben la data ^^)
+		--> POW (la preuve de travail...et là ya un hic...on voit ca après)
+		--> PRESENT_HASH (hash de notre data)
+
+	On pourrait implémenter un protocole qui reproduit un peu le fonctionnement de HTTP...genre de la forme champ : value
+	Ce qui donnerait par exemple
+	### EXEMPLE DE BLOCK ###
+	NUMERO         : 0
+	PRECEDENT_HASH : 000000000000000000000000
+	DATA	       : je suis ; un champ data; séparé; par un séparateur; défini
+	POW	       : ryidzhc
+	PRESENT_HASH   : 0000000000000000azertyui
+	### FIN EXEMPLE DE BLOCK ###
+
+III) Le hic du champ POW
+
+	Il faut se mettre d'accord...la pow s'applique à chaque algo appliqué ou seulement au dernier ?
+	Je pencherai pour seulement le dernier hashage...sinon ca risque de mettre un temps fou pour créer un bloc valide...
+	De plus, le x17 existe - t -il ou tu as crée cette suite de hashages...parce que ceux ci (a part le blake je crois) ne sont pas implémentés en python natif.
+	Du coup...pourquoi ne utiliser des algos plus traditionels pour les 16 premiers hashages et utiliser un algo ASIC (ou anti asic je suis pas calé sur le terme)
+	uniquement pour le hashage qui servira à la POW ?
+
+IV) Conclusion
+
+	Il y a quelques zones obscures sur les blocks...mais rien d'impossible à résoudre ^^

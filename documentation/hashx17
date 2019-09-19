@@ -1,0 +1,31 @@
+### HASHAGE X17 ###
+
+I) Principe :
+
+	Faire à la suite :
+
+		Blake,          --> Implémenté en python natif (hashlib) 
+		BMW,            --> Nom implémenté en python natif
+		Groestl,        --> Nom implémenté en python natif
+		JH,             --> Nom implémenté en python natif
+		Keccak,         --> Implémenté via pysha3 (sha3)
+		Skein,          --> Implémenté en python via pyskein
+		Luffa,          --> Nom implémenté en python natif
+		Cubehash,       --> Nom implémenté en python natif
+		Shavite,        --> Si c'est du sha3, implémenté en python natif (hashlib)
+		Simd,           --> Nom implémenté en python natif
+		Echo,           --> Nom implémenté en python natif
+		Hamsi,          --> Nom implémenté en python natif
+		Fugue,          --> Nom implémenté en python natif
+		Shabal,         --> Nom implémenté en python natif
+		Whirlpool,      --> Implémenté via whirlpool
+		Loselose,       --> Nom implémenté en python natif
+		Djb2            --> Nom implémenté en python natif
+
+II) Pourquoi ?
+
+	Juste quelque chose qui me rends sceptique...pourquoi utiliser autant
+	d'algos différents ? Pourquoi ne pas se contenter d'un ?
+	Multiplier les algos ne rendra pas la chose plus ASIC...
+
+

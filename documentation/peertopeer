@@ -1,0 +1,30 @@
+### PEER TO PEER ###
+
+Bon on sait tous qu'on va devoir tricher pour cette partie...
+
+Voilà ce qu'on pourrait faire :
+
+I) Présentation
+
+	Résumons le problème...Comment les nouveaux arrivants savent qui appartient au réseau...ben ils le savent pas...donc nous ce qu'on peut faire, c'est tricher
+	On pourrait avoir un serveur par lequel chaque nouveau "membre" de la blockchain doit passer à son initialisation...ce serveur distribuera la liste des addresses qui sont
+	dans le réseau...et chaque x temps, les "membres" vont remettre à jour leur liste auprès d'un autre membre...
+	Un schéma valant milles mots...voyez par vous même...
+
+II) Schéma
+
+	De l'utilité du serveur :
+		
+		Résumé : Bob et Alice veulent entrer dans la liste d'addresses qui sont "membres" du réseau hexacoin, le serveur de référence s'appelera SERV pour notre exemple.
+		Il est un serveur qui fait tourner 2 choses, notre logiciel d'admission d'un membre et un ftp.
+		Le premier gèrera 2 choses, il rajoute le membre à la liste qui traîne sur le ftp, et assigne un "serveur" référent au nouveau membre.
+		Ce serveur référent est en fait pioché au hasard dans la liste présente sur le ftp...A quoi servira ce serveur référent...Eh ben ce sera à lui que le nouveau
+		membre se réferera pour mettre à jour sa liste de membres, et en cas de panne de se référent, le "membre" ira se référer à SERV.
+		
+		Faiblesse : Ce modèle à une faiblesse majeur...si on, fait tomber le SERV...il n'y a plus de mises à jours de la liste des membres...paralysant momentanément l'hexa
+		mais surtout l'isolant de l'extérieur...Pour pallier à ce problème, on pourrait intégrer à chaque logiciel d'hexa un pti bout de code qui verrouille toute action sur 
+		l'hexa si le SERV tombe... Autrement dit, si le SERV tombe, on bloque la création de blocks.
+
+	Si on résume...le SERV ne centralise QUE l'admission de nouveaux membres, et donc on reste décentralisé dans la gestion de l'hexa.
+
+Si tout n'est pas clair, n'hésitez pas à rajouter, supprimer, modifier ^^

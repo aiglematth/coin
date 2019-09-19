@@ -1,0 +1,70 @@
+### PROTOCOLES DE CONTROLE ###
+
+Pour le moment je vois deux grands protos de controles à faire, celui qui 
+vérifie l'intégrité de la blockchain et celui qui vérifie que le serveur de 
+la liste de membres est accessible...
+
+I) Vérification blockchain
+
+	Bon là on va être d'accord je pense...on peut pas faire vérifier
+	à chaque utilisateur l'intégrité de sa blockchain en la lui faisant
+	comparer aveec TOUT les utilisateurs...Donc la je vous laisserai
+	faire des probabilités et on décidera d'un nombre de vérification 
+	par unité de temps non ?
+	
+	Pour qu'une vérification soit correcte, 51% de la block devra être
+	similaire à la notre...et là j'ai une idée...
+
+	On pourrait vérifier l'intégrité de la block...pour ca, notre proto
+	pourrait marcher comme un ping...un echo-request qui demande le hash
+	de la blockchain jusqu'à un block x, et l'echo-reply qui renvoie le 
+	hash de la destinataire.
+
+	Un schéma vallant 10 000 mots...regardez...
+
+	Bob a une block...son temps est venu de la faire vérifier...
+	il la hash jusqu'au block 12 et cela lui donne un hash X.
+	Il l'envoit à un nombre entier n d'utilisateurs sous la forme d'un 
+	echo du type
+	### MAQUETTE D'ECHO ###
+	SOURCE      : <adresse_de_Bob>
+	DESTINATION : <adresse_d_une_des_personnes>
+	BLOCK       : 12
+
+	Le destinataire, ici on va l'appeler Alice recoit ca...il va hasher 
+	les 12 premiers blocks de sa block et obtient un hash X...
+	Il renvoi un reply de cette forme
+	### MAQUETTE DE REPLY
+	SOURCE      : <adresse_d_Alice>
+	DESTINATION : <adresse_de_Bob>
+	HASH        : X
+
+	Bob compare le hash et la miracle X == X !!!! 
+	Ensuite Bob fait ca avec un nombre n de personnes et à la fin de sa
+	vérification, il vérifie que :
+		
+		Nombre de hashs de blockchain similaires à la sienne
+		/
+		Nombre total de personnes contactés pour la vérification
+		=
+		Le plus grand pourcentage entre tout les hashs renvoyés
+
+	Si cette relation est vérifiée il conserve sa block, sinon il adopte
+	celle qui a le plus grand pourcentage ^^
+
+II) Protocole de vérification de la disponnibilité du serveur
+
+	Bon là on fait simple...on s'y connecte et on crée un proto toujours similaire à icmp...
+	### ENVOI DU CLIENT QUI CHERCHE A VERIFIER LA DISPO DU SERV ###
+	DESTINATION  : <addr_du_SERV>
+	SOURCE       : <addr_du_membre>
+	VERIFICATION : <un_code_de_verification_choisi>
+
+	### LE SERV RENVERRA (si tout se passe bien) ###
+        DESTINATION  : <addr_du_membre>
+        SOURCE       : <addr_du_SERV>
+        VERIFICATION : <un_code_de_confirmation_choisi>
+
+	Et s'il y a une erreur, le meme mais avec un code différent...ou pas de réponse...
+
+Il y a surement pleins de points oubliés...faites les moi parvenir...et n'hésitez pas à modifier, supprimer, ajouter ^^

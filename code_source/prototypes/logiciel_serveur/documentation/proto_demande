@@ -1,0 +1,116 @@
+### Protocole de demande au serveur ###
+
+Bon on va simplifier en l'appelant PDS...parce que c'est trop long...
+A quoi va servir ce premier petit protocole...ben comme son nom l'indique, à
+faire en sorte que les clients puissent communiquer avec le serveur dans un 
+langage compréhensible...
+
+Pour ce faire, le client doit pouvoir demander 3 choses via un champ appelé
+DEMANDE.
+
+	: 0 --> Code pour s'initialiser
+DEMANDE : 1 --> Code pour avoir un nouveau serveur referent
+	: 2 --> Code pour s'enlever de la liste des membres référents
+	: 3 --> Code pour l'envoi du fichier membres
+	: 4 --> Code pour l'inscription
+
+I) L'initialisation :
+
+	Comme son nom l'indique, le client doit pouvoir s'initialiser...
+	Autrement dit, il doit être rajouté à la liste de peer to peer et 
+	un membre de reference doit etre fournit.
+	Comment on met ca en pratique, eh ben quand le serveur recoit le code
+	0 ainsi que le nom de l'user et son mot de passe crypté de facon asymétrique
+	il rajoute notre ip dans la liste suivie du nom d'utilisateur, et nous 
+	renvoit un champ REFERENT remplit avec l'ip d'un referent au hasard...
+	Celui ci servira a mettre à jour la liste du membre sans qu'il ai 
+	forcémment besoin de se référer au serv...comme ca celui ci ne sera 
+	jamais satturé^^
+
+II) Le changement de referent :
+
+	Bon ben là encore c'est explicite...Une demande de code 1 permet au
+	membre de recevoir un autre referent.
+
+	Là pas de problème de sécurité apparent...au pire une personne
+	exerieur au réseau peer to peer peut obtenir des ips de gens qui font
+	parti du p2p...en bref rien de grave.
+
+III) La suppression de notre ip de la liste :
+
+	Phase qui peut être demandé pour pleins de raisons...mais l'une 
+	d'elle est logique...a chaque fois qu'un membre du p2p fini une
+	session il supp son ip via ce code, et ainsi les ips présent dans
+	la liste sont toujours valides !!
+	
+	Comme pour l'initialisation le membre nous envoie son nom d'utilisauteur
+	ainsi que son mot de passe avec sa clef privé.
+
+IV) L'inscription :
+
+	L'inscription sert à entrer dans la blockchain...Pour ce faire, on va devoir
+	choisir un nom d'utilisateur et un mot de passe ainsi que se créer une paire 
+	de clef privé/publique qui servira à crypter notre mot de passe avant chaque 
+	initialisation / suppression... 
+
+Bon maintenant on fais un exemple de session !!
+Oh petite précision...on utilise TCP et pas UDP donc plus lent...mais plus
+sûr car orienté connexion...
+
+V) Demande du fichier :
+
+	Ben le client demande le fichier...donc je lui envoie ^^
+	Pour ce faire, je lui envoi d'abord un message de la forme :
+	
+		SIZE : <taille_du_fichier>
+
+	Quand il a reçu la taille, il me prévient avec un :
+
+		OK
+
+	Et ensuite j'envoi le fichier ^^
+
+V) Exemple :
+
+	Bob veut se lancer dans le minage...pour cela il doit d'abord rentrer
+	dans le réseau p2p...il lance son logiciel client qui va envoyer ceci
+	au serveur :
+
+		DEMANDE : 0
+
+	Le serveur vérifie que Bob n'est pas déjà actif dans la liste (ce qui
+	est possible s'il s'est déco la dernière fois trop rapidement pour
+	qu'un code 3 sois envoyé).
+	Dans tout les cas le serv va renvoyer a Bob quelque chose de la 
+	forme :
+		
+		REFERENT : <ip_de_Alice>
+
+	Bob sait qu'il pourra aller télécharger la liste des ips du p2p chez
+	Alice...si jamais cela ne marche pas, par exemple si le serveur n'a
+	pas encore mis à jour le fait que Alice n'est plus en activité, le 
+	Serveur fournira la liste à Bob.
+
+	Bob a fini sa séance...2 possibilités, sois il ferme tout comme un 
+	gros gouniafié...auquel cas son ip sera retiré de la liste quand 
+	le serveur aura controllé la connectivité entre le logiciel client
+	de Bob et lui et ce sera rendu compte que celui ci est éteint, sois
+	Bob ferme proprement sa session en envoyant un :
+
+		DEMANDE : 3
+	
+	Auquel cas le serveur fouillera sa liste, et si Bob est dedans il lui
+	renvoi le code suivant après l'avoir retiré de la liste :
+
+		CODE : GOOD
+        
+	Si Bob n'était pas dans la liste...on sait jamais une erreur est vite
+	arrivé, le serveur lui renverra ce code :
+
+		CODE : NIL
+ 
+	NIL pour Not In List...Mais pas de craintes le fait qu'il ne soit
+	dans la liste n'est pas un vrai problème (je détaillerai ça si vous 
+	voulez).
+	
+Voila...qu'en pensez vous ? Forces / Faiblesses ^^
